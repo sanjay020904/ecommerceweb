@@ -31,6 +31,21 @@ target/
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
+# Logs
+*.log
+
+# Runtime files
+*.pid
+*.seed
+
+# Environment files (VERY IMPORTANT)
+.env
+
+# Maven wrapper (optional but safe)
+.mvn/wrapper/maven-wrapper.properties
+
+# Temporary files
+*.tmp
 
 ### VS Code ###
 .vscode/
