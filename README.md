@@ -31,5 +31,5 @@
 
 ![Login](screenshots/login.png)
 ![Register](screenshots/register.png)
-![Products](screenshots/products.png)
+![Products](screenshots/product.png)
 ![Cart](screenshots/cart.png)
