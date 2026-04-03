@@ -27,3 +27,9 @@
 - Authentication Filter
 - Password Encryption
 - MVC Refactoring
+- ## 📸 Screenshots
+
+![Login](screenshots/login.png)
+![Register](screenshots/register.png)
+![Products](screenshots/products.png)
+![Cart](screenshots/cart.png)
