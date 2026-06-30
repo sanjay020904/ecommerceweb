@@ -20,48 +20,74 @@ public class CartServlet extends HttpServlet {
     private CartDao cartDAO = new CartDao();
     private ProductDao productDAO = new ProductDao();
 
-    public void service(HttpServletRequest request, HttpServletResponse response)
+    @Override
+    protected void service(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 
         String action = request.getParameter("action");
-
         HttpSession session = request.getSession();
 
         List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
-
         if (cart == null) {
             cart = new ArrayList<>();
         }
 
-        if ("add".equals(action)) {
+        Integer userId = (Integer) session.getAttribute("userId");
 
-            int productId = Integer.parseInt(request.getParameter("productId"));
-            Products p = null;
-            try {
-                p = productDAO.getProductById(productId);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+        try {
+            if ("add".equals(action)) {
+                int productId = Integer.parseInt(request.getParameter("productId"));
+                Products p = productDAO.getProductById(productId);
+
+                if (p != null) {
+                    CartItem item = new CartItem();
+                    item.setProductId(p.getProduct_id());
+                    item.setName(p.getName());
+                    item.setPrice(p.getPrice());
+                    item.setQuantity(1);
+                    item.setImage(p.getImage());
+
+                    cartDAO.addToCart(cart, item);
+
+                    if (userId != null) {
+                        cartDAO.addToCartDb(userId, productId, 1);
+                    }
+                }
+
+            } else if ("remove".equals(action)) {
+                int productId = Integer.parseInt(request.getParameter("productId"));
+                cartDAO.removeFromCart(cart, productId);
+
+                if (userId != null) {
+                    cartDAO.removeFromCartDb(userId, productId);
+                }
+
+            } else if ("update".equals(action)) {
+                int productId = Integer.parseInt(request.getParameter("productId"));
+                int quantity = Integer.parseInt(request.getParameter("quantity"));
+
+                if (quantity <= 0) {
+                    cartDAO.removeFromCart(cart, productId);
+                    if (userId != null) {
+                        cartDAO.removeFromCartDb(userId, productId);
+                    }
+                } else {
+                    for (CartItem item : cart) {
+                        if (item.getProductId() == productId) {
+                            item.setQuantity(quantity);
+                            break;
+                        }
+                    }
+                    if (userId != null) {
+                        cartDAO.updateCartQtyDb(userId, productId, quantity);
+                    }
+                }
             }
-
-            CartItem item = new CartItem();
-            item.setProductId(p.getProduct_id());
-            item.setName(p.getName());
-            item.setPrice(p.getPrice());
-            item.setQuantity(1);
-            item.setImage(p.getImage());
-
-            cartDAO.addToCart(cart, item);
-
-        } else if ("remove".equals(action)) {
-
-            int productId = Integer.parseInt(request.getParameter("productId"));
-            cartDAO.removeFromCart(cart, productId);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         session.setAttribute("cart", cart);
-
         response.sendRedirect("cart.jsp");
     }
 }
-
-

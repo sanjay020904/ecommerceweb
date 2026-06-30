@@ -1,68 +1,89 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: S.Sanjay
-  Date: 23-03-2026
-  Time: 21:41
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | APEX Store</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
-
-<body style="margin:0; padding:0; font-family: 'Poppins', Arial, sans-serif; background: lavender;">
+<body>
 <%
     response.setHeader("Cache-Control","no-cache,no-store,must-revalidate");
     response.setHeader("Pragma", "no-cache");
     response.setDateHeader("Expires", 0);
-
 %>
 
-<!-- Center Container -->
-<div style="display:flex; justify-content:center; align-items:center; height:100vh;">
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="nav-brand">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #6366f1;"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            APEX
+        </div>
+        <ul class="nav-links">
+            <li><a href="${pageContext.request.contextPath}/index.jsp" class="nav-item">Home</a></li>
+            <li><a href="${pageContext.request.contextPath}/register.jsp" class="nav-item">Register</a></li>
+        </ul>
+    </header>
 
-    <!-- Login Card -->
-    <div style="background:white; padding:40px; border-radius:15px; width:350px;
-                    box-shadow: 0 8px 20px rgba(0,0,0,0.2); text-align:center;">
+    <!-- Main Auth Card -->
+    <main class="auth-container">
+        <div class="auth-card">
+            <h1 class="auth-title">Welcome Back</h1>
+            <p class="auth-subtitle">Login to your premium account</p>
 
-        <!-- Title -->
-        <h1 style="color:#6a5acd; margin-bottom:10px;">Welcome Back</h1>
-        <p style="color:gray; margin-bottom:30px;">Login to your eCommerce account</p>
+            <%-- Alerts based on request params --%>
+            <% 
+                String error = request.getParameter("error");
+                String registered = request.getParameter("registered");
+                if ("invalid".equals(error)) {
+            %>
+                <div class="alert alert-danger">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    Invalid username or password.
+                </div>
+            <% 
+                } else if ("system".equals(error)) {
+            %>
+                <div class="alert alert-danger">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    A database connection failure occurred.
+                </div>
+            <% 
+                } else if ("true".equals(registered)) {
+            %>
+                <div class="alert alert-success">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    Account created successfully. Login below.
+                </div>
+            <% 
+                }
+            %>
 
-        <!-- Form -->
-        <form action="Login">
+            <!-- Login Form -->
+            <form action="${pageContext.request.contextPath}/Login" method="POST">
+                <div class="form-group">
+                    <label class="form-label" for="uname">Username</label>
+                    <input type="text" id="uname" name="uname" placeholder="e.g. Rohit Kumar" required class="form-input">
+                </div>
 
-            <!-- Username -->
-            <input type="text" name="uname" placeholder="Enter Username" required
-                   style="width:100%; padding:12px; margin-bottom:15px;
-                           border-radius:8px; border:1px solid #ccc; font-size:14px;">
+                <div class="form-group">
+                    <label class="form-label" for="pass">Password</label>
+                    <input type="password" id="pass" name="pass" placeholder="••••••••" required class="form-input">
+                </div>
 
-            <!-- Password -->
-            <input type="password" name="pass" placeholder="Enter Password" required
-                   style="width:100%; padding:12px; margin-bottom:20px;
-                           border-radius:8px; border:1px solid #ccc; font-size:14px;">
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 13px;">Login</button>
 
-            <!-- Login Button -->
-            <button type="submit"
-                    style="width:100%; padding:12px; background:#6a5acd; color:white;
-                           border:none; border-radius:8px; font-size:16px; cursor:pointer;">
-                Login
-            </button>
+                <p class="auth-footer">
+                    New to APEX? <a href="${pageContext.request.contextPath}/register.jsp">Create Account</a>
+                </p>
+            </form>
+        </div>
+    </main>
 
-            <!-- Extra Links -->
-
-
-            <p style="margin-top:10px; font-size:14px;">
-                New user?
-                <a href="register.jsp" style="color:#6a5acd; text-decoration:none;">
-                    Create Account
-                </a>
-            </p>
-
-        </form>
-    </div>
-</div>
-
+    <!-- Footer -->
+    <footer class="footer">
+        &copy; 2026 APEX Store. All rights reserved. Secure authentication.
+    </footer>
 </body>
 </html>

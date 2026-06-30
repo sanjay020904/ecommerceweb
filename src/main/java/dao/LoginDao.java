@@ -1,6 +1,5 @@
 package dao;
 
-import com.mysql.cj.protocol.Resultset;
 import util.Database;
 
 import java.sql.Connection;
@@ -8,30 +7,26 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class LoginDao  {
+public class LoginDao {
 
-
-
-
-    public Boolean accessQuery(String uname,String pass) throws SQLException, ClassNotFoundException {
-            Database db=new Database();
-            Connection con= db.getConnect();
-            Boolean access =false;
-            String query="select * from users where name=? and password=?";
-            PreparedStatement ps=con.prepareStatement(query);
+    public Integer authenticateUser(String uname, String pass) throws SQLException, ClassNotFoundException {
+        Database db = new Database();
+        String query = "SELECT user_id FROM users WHERE name = ? AND password = ?";
+        try (Connection con = db.getConnect();
+             PreparedStatement ps = con.prepareStatement(query)) {
             ps.setString(1, uname);
-            ps.setString(2, pass);
-
-            ResultSet rs=ps.executeQuery();
-            if(rs.next())
-            {
-                return true;
+            ps.setString(2, pass); // password should be pre-hashed before calling this
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("user_id");
+                }
             }
-            return access;
-
+        }
+        return null;
     }
 
-
-
-
+    public Boolean accessQuery(String uname, String pass) throws SQLException, ClassNotFoundException {
+        // Kept for simple backwards compatibility, but authenticateUser is preferred.
+        return authenticateUser(uname, pass) != null;
+    }
 }

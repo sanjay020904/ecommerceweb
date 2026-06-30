@@ -1,74 +1,111 @@
 <%@ page import="model.Products" %>
-<%@ page import="java.util.List" %><%--
-  Created by IntelliJ IDEA.
-  User: S.Sanjay
-  Date: 24-03-2026
-  Time: 19:20
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="model.CartItem" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products | APEX Store</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
-
-
-<body style="font-family: Arial, sans-serif; background-color: #f5f5f5; margin: 0;">
+<body>
 <%
     response.setHeader("Cache-Control","no-cache,no-store,must-revalidate");
     response.setHeader("Pragma", "no-cache");
     response.setDateHeader("Expires", 0);
 
-%>
-
-
-<!-- Header -->
-<header style="background-color: #6a5acd; color: white; padding: 15px; text-align: center;">
-    <h1>My E-Commerce Store</h1>
-    <p>Explore Our Latest Products</p>
-</header>
-<%   if(session.getAttribute("username")==null)
-{
-    response.sendRedirect("login.jsp");
-    return;
-}
-    List<Products> products = (List<Products>) request.getAttribute("products");
-
-%>
-
-<!-- Product Section -->
-<div style="display: flex; flex-wrap: wrap; justify-content: center; padding: 20px; gap: 20px;">
-
-    <% if(products !=null && !products.isEmpty())
-        {
-            for(Products p:products){
-
-     %>
-    <div style="background: white; width: 250px; border-radius: 10px; padding: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); text-align: center;">
-        <img src="<%= p.getImage()%>"
-             style="width: 100%; height: 180px; object-fit: cover; border-radius: 10px;">
-        <h3>NAME:<%= p.getName()%></h3>
-        <p>PRICE:<%= p.getPrice()%></p>
-
-
-        <form action="Cart">
-            <input type="hidden" name="productId" value="<%= p.getProduct_id()%>">
-            <input type="hidden" name="action" value="add">
-            <button style="background-color: #6a5acd; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">Add to Cart</button>
-        </form>
-
-    </div>
-   <%
-      }
+    // Authentication is handled by Filter, but verify session username just in case.
+    String username = (String) session.getAttribute("username");
+    if (username == null) {
+        response.sendRedirect("login.jsp");
+        return;
     }
-    else{
 
-      %>  <p>no products available...</p>
-    <%
+    List<Products> products = (List<Products>) request.getAttribute("products");
+    List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
+    
+    int cartCount = 0;
+    if (cart != null) {
+        for (CartItem item : cart) {
+            cartCount += item.getQuantity();
         }
-    %>
+    }
+%>
 
+    <!-- Header Navigation -->
+    <header class="navbar">
+        <div class="nav-brand">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #6366f1;"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            APEX
+        </div>
+        <ul class="nav-links">
+            <li><a href="${pageContext.request.contextPath}/products" class="nav-item active" style="color: #6366f1;">Shop</a></li>
+            <li class="cart-badge-container">
+                <a href="${pageContext.request.contextPath}/cart.jsp" class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+                    Cart
+                </a>
+                <% if (cartCount > 0) { %>
+                    <span class="cart-badge"><%= cartCount %></span>
+                <% } %>
+            </li>
+            <li class="nav-item" style="border-left: 1px solid rgba(255,255,255,0.15); padding-left: 15px; color: #cbd5e1;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 4px;"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <%= username %>
+            </li>
+            <li><a href="${pageContext.request.contextPath}/logout" class="btn btn-secondary" style="padding: 6px 14px; font-size: 13px;">Logout</a></li>
+        </ul>
+    </header>
 
-</div>
+    <!-- Product Grid Section -->
+    <main class="products-section">
+        <h2 class="section-title">Explore Our Collection</h2>
+        <p class="section-subtitle">Curated premium essentials designed for modern lifestyles.</p>
+
+        <div class="products-grid">
+            <% 
+                if (products != null && !products.isEmpty()) {
+                    for (Products p : products) {
+            %>
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img src="<%= p.getImage() %>" alt="<%= p.getName() %>" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name"><%= p.getName() %></h3>
+                        <p class="product-price">₹<%= String.format("%,.2f", p.getPrice()) %></p>
+                        
+                        <div class="product-actions">
+                            <form action="${pageContext.request.contextPath}/Cart" method="POST">
+                                <input type="hidden" name="productId" value="<%= p.getProduct_id() %>">
+                                <input type="hidden" name="action" value="add">
+                                <button type="submit" class="btn btn-primary">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                    Add to Cart
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            <% 
+                    }
+                } else {
+            %>
+                <div style="grid-column: 1 / -1; text-align: center; padding: 50px 0;">
+                    <p style="color: var(--text-muted);">No products available in the database.</p>
+                </div>
+            <% 
+                }
+            %>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        &copy; 2026 APEX Store. All rights reserved. Designed with ultimate aesthetics.
+    </footer>
+
 </body>
 </html>
