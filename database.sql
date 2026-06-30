@@ -30,9 +30,9 @@ CREATE TABLE cart (
 
 -- SAMPLE USERS
 INSERT INTO users (name, email, password) VALUES
-                                              ('Rohit Kumar', 'rohit@gmail.com', 'pass123'),
-                                              ('Anjali Sharma', 'anjali@gmail.com', 'pass123'),
-                                              ('Vikram Singh', 'vikram@gmail.com', 'pass123');
+                                              ('Rohit Kumar', 'rohit@gmail.com', '9b8769a4a742959a2d0298c36fb70623f2dfacda8436237df08d8dfd5b37374c'),
+                                              ('Anjali Sharma', 'anjali@gmail.com', '9b8769a4a742959a2d0298c36fb70623f2dfacda8436237df08d8dfd5b37374c'),
+                                              ('Vikram Singh', 'vikram@gmail.com', '9b8769a4a742959a2d0298c36fb70623f2dfacda8436237df08d8dfd5b37374c');
 
 -- SAMPLE PRODUCTS
 INSERT INTO products (name, price, image) VALUES
