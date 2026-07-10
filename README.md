@@ -29,6 +29,7 @@
 - MVC Refactoring
 - ## 📸 Screenshots
 
+![Home](screenshots/home.png)
 ![Login](screenshots/login.png)
 ![Register](screenshots/register.png)
 ![Products](screenshots/product.png)
