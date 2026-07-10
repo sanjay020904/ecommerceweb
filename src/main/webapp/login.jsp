@@ -1,11 +1,11 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | APEX Store</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/style.css">
 </head>
 <body>
 <%
@@ -21,8 +21,8 @@
             APEX
         </div>
         <ul class="nav-links">
-            <li><a href="${pageContext.request.contextPath}/index.jsp" class="nav-item">Home</a></li>
-            <li><a href="${pageContext.request.contextPath}/register.jsp" class="nav-item">Register</a></li>
+            <li><a href="<%= request.getContextPath() %>/index.jsp" class="nav-item">Home</a></li>
+            <li><a href="<%= request.getContextPath() %>/register.jsp" class="nav-item">Register</a></li>
         </ul>
     </header>
 
@@ -61,7 +61,7 @@
             %>
 
             <!-- Login Form -->
-            <form action="${pageContext.request.contextPath}/Login" method="POST">
+            <form action="<%= request.getContextPath() %>/Login" method="POST">
                 <div class="form-group">
                     <label class="form-label" for="uname">Username</label>
                     <input type="text" id="uname" name="uname" placeholder="e.g. Rohit Kumar" required class="form-input">
@@ -75,7 +75,7 @@
                 <button type="submit" class="btn btn-primary" style="width: 100%; padding: 13px;">Login</button>
 
                 <p class="auth-footer">
-                    New to APEX? <a href="${pageContext.request.contextPath}/register.jsp">Create Account</a>
+                    New to APEX? <a href="<%= request.getContextPath() %>/register.jsp">Create Account</a>
                 </p>
             </form>
         </div>

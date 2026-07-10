@@ -1,11 +1,11 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register | APEX Store</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/style.css">
 </head>
 <body>
 <%
@@ -21,8 +21,8 @@
             APEX
         </div>
         <ul class="nav-links">
-            <li><a href="${pageContext.request.contextPath}/index.jsp" class="nav-item">Home</a></li>
-            <li><a href="${pageContext.request.contextPath}/login.jsp" class="nav-item">Login</a></li>
+            <li><a href="<%= request.getContextPath() %>/index.jsp" class="nav-item">Home</a></li>
+            <li><a href="<%= request.getContextPath() %>/login.jsp" class="nav-item">Login</a></li>
         </ul>
     </header>
 
@@ -60,7 +60,7 @@
             %>
 
             <!-- Register Form -->
-            <form action="${pageContext.request.contextPath}/Register" method="POST">
+            <form action="<%= request.getContextPath() %>/Register" method="POST">
                 <div class="form-group">
                     <label class="form-label" for="uname">Username</label>
                     <input type="text" id="uname" name="uname" placeholder="e.g. Rohit Kumar" required class="form-input">
@@ -79,7 +79,7 @@
                 <button type="submit" class="btn btn-primary" style="width: 100%; padding: 13px;">Create Account</button>
 
                 <p class="auth-footer">
-                    Already have an account? <a href="${pageContext.request.contextPath}/login.jsp">Login Here</a>
+                    Already have an account? <a href="<%= request.getContextPath() %>/login.jsp">Login Here</a>
                 </p>
             </form>
         </div>

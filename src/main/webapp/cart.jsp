@@ -1,13 +1,13 @@
 <%@ page import="model.CartItem" %>
 <%@ page import="java.util.List" %>
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" isELIgnored="false" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Cart | APEX Store</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/style.css">
 </head>
 <body>
 <%
@@ -41,9 +41,9 @@
             APEX
         </div>
         <ul class="nav-links">
-            <li><a href="${pageContext.request.contextPath}/products" class="nav-item">Shop</a></li>
+            <li><a href="<%= request.getContextPath() %>/products" class="nav-item">Shop</a></li>
             <li class="cart-badge-container">
-                <a href="${pageContext.request.contextPath}/cart.jsp" class="nav-item active" style="color: #6366f1;">
+                <a href="<%= request.getContextPath() %>/cart.jsp" class="nav-item active" style="color: #6366f1;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
                     Cart
                 </a>
@@ -55,7 +55,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 4px;"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 <%= username %>
             </li>
-            <li><a href="${pageContext.request.contextPath}/logout" class="btn btn-secondary" style="padding: 6px 14px; font-size: 13px;">Logout</a></li>
+            <li><a href="<%= request.getContextPath() %>/logout" class="btn btn-secondary" style="padding: 6px 14px; font-size: 13px;">Logout</a></li>
         </ul>
     </header>
 
@@ -67,7 +67,7 @@
                 <div class="empty-cart-icon">🛒</div>
                 <h2 class="empty-cart-title">Your Cart is Empty</h2>
                 <p class="empty-cart-subtitle">Looks like you haven't added anything to your cart yet.</p>
-                <a href="${pageContext.request.contextPath}/products" class="btn btn-primary" style="padding: 12px 30px;">Shop New Products</a>
+                <a href="<%= request.getContextPath() %>/products" class="btn btn-primary" style="padding: 12px 30px;">Shop New Products</a>
             </div>
         <% } else { %>
             <!-- Cart Items Grid Layout -->
@@ -91,14 +91,14 @@
                             <div class="cart-item-actions">
                                 <!-- Quantity Modification Controls -->
                                 <div class="qty-controls">
-                                    <form action="${pageContext.request.contextPath}/Cart" method="POST" style="margin: 0;">
+                                    <form action="<%= request.getContextPath() %>/Cart" method="POST" style="margin: 0;">
                                         <input type="hidden" name="action" value="update">
                                         <input type="hidden" name="productId" value="<%= item.getProductId() %>">
                                         <input type="hidden" name="quantity" value="<%= item.getQuantity() - 1 %>">
                                         <button type="submit" class="qty-btn">&minus;</button>
                                     </form>
                                     <span class="qty-val"><%= item.getQuantity() %></span>
-                                    <form action="${pageContext.request.contextPath}/Cart" method="POST" style="margin: 0;">
+                                    <form action="<%= request.getContextPath() %>/Cart" method="POST" style="margin: 0;">
                                         <input type="hidden" name="action" value="update">
                                         <input type="hidden" name="productId" value="<%= item.getProductId() %>">
                                         <input type="hidden" name="quantity" value="<%= item.getQuantity() + 1 %>">
@@ -112,7 +112,7 @@
                                 </div>
 
                                 <!-- Remove Button -->
-                                <form action="${pageContext.request.contextPath}/Cart" method="POST" style="margin: 0;">
+                                <form action="<%= request.getContextPath() %>/Cart" method="POST" style="margin: 0;">
                                     <input type="hidden" name="action" value="remove">
                                     <input type="hidden" name="productId" value="<%= item.getProductId() %>">
                                     <button type="submit" class="btn btn-secondary" style="padding: 10px; border-radius: var(--border-radius-sm); color: #f43f5e; border-color: rgba(244,63,94,0.2);">
@@ -147,7 +147,7 @@
 
                     <div class="summary-actions">
                         <button class="btn btn-primary" style="padding: 14px;">Proceed to Checkout</button>
-                        <a href="${pageContext.request.contextPath}/products" class="btn btn-secondary" style="padding: 12px;">Continue Shopping</a>
+                        <a href="<%= request.getContextPath() %>/products" class="btn btn-secondary" style="padding: 12px;">Continue Shopping</a>
                     </div>
                 </div>
 

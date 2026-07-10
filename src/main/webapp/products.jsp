@@ -1,14 +1,14 @@
 <%@ page import="model.Products" %>
 <%@ page import="model.CartItem" %>
 <%@ page import="java.util.List" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products | APEX Store</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/style.css">
 </head>
 <body>
 <%
@@ -24,6 +24,10 @@
     }
 
     List<Products> products = (List<Products>) request.getAttribute("products");
+    if (products == null) {
+        response.sendRedirect(request.getContextPath() + "/products");
+        return;
+    }
     List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
     
     int cartCount = 0;
@@ -41,9 +45,9 @@
             APEX
         </div>
         <ul class="nav-links">
-            <li><a href="${pageContext.request.contextPath}/products" class="nav-item active" style="color: #6366f1;">Shop</a></li>
+            <li><a href="<%= request.getContextPath() %>/products" class="nav-item active" style="color: #6366f1;">Shop</a></li>
             <li class="cart-badge-container">
-                <a href="${pageContext.request.contextPath}/cart.jsp" class="nav-item">
+                <a href="<%= request.getContextPath() %>/cart.jsp" class="nav-item">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
                     Cart
                 </a>
@@ -55,7 +59,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 4px;"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 <%= username %>
             </li>
-            <li><a href="${pageContext.request.contextPath}/logout" class="btn btn-secondary" style="padding: 6px 14px; font-size: 13px;">Logout</a></li>
+            <li><a href="<%= request.getContextPath() %>/logout" class="btn btn-secondary" style="padding: 6px 14px; font-size: 13px;">Logout</a></li>
         </ul>
     </header>
 
@@ -78,7 +82,7 @@
                         <p class="product-price">₹<%= String.format("%,.2f", p.getPrice()) %></p>
                         
                         <div class="product-actions">
-                            <form action="${pageContext.request.contextPath}/Cart" method="POST">
+                            <form action="<%= request.getContextPath() %>/Cart" method="POST">
                                 <input type="hidden" name="productId" value="<%= p.getProduct_id() %>">
                                 <input type="hidden" name="action" value="add">
                                 <button type="submit" class="btn btn-primary">

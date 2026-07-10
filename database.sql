@@ -28,7 +28,7 @@ CREATE TABLE cart (
                       FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
 
--- SAMPLE USERS
+-- SAMPLE USERS (Passwords are SHA-256 hashes of 'pass123')
 INSERT INTO users (name, email, password) VALUES
                                               ('Rohit Kumar', 'rohit@gmail.com', '9b8769a4a742959a2d0298c36fb70623f2dfacda8436237df08d8dfd5b37374c'),
                                               ('Anjali Sharma', 'anjali@gmail.com', '9b8769a4a742959a2d0298c36fb70623f2dfacda8436237df08d8dfd5b37374c'),
