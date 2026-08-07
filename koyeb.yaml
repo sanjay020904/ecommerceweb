@@ -1,0 +1,18 @@
+# Koyeb Deployment Manifest for E-Commerce Application
+name: ecommerceweb
+type: web
+routes:
+  - path: /
+    port: 8080
+ports:
+  - port: 8080
+    protocol: http
+env:
+  - key: PORT
+    value: "8080"
+  - key: DB_URL
+    value: "${DB_URL}"
+  - key: DB_USER
+    value: "${DB_USER}"
+  - key: DB_PASS
+    value: "${DB_PASS}"
